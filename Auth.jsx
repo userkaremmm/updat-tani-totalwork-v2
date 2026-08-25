@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Eye, EyeOff, LockKeyhole, Mail, ShieldCheck } from 'lucide-react'
-import logo from '../../TOTAL WORK LOGO.jpg'
+const logo = '/TOTAL WORK LOGO.jpg'
 import { api } from './api.js'
 import './Auth.css'
 
