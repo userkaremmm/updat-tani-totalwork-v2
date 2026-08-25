@@ -1,0 +1,296 @@
+/* ============================================================================
+   TOTAL WORK — Base layer
+   Reset, document defaults, typography, focus, scrollbars.
+   No component styling here. The only !important in the codebase lives in the
+   reduced-motion block below, where overriding every component is the point.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--canvas);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--canvas);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-body);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ---- Headings ------------------------------------------------------------
+   Sizes are set by the component that owns them; this only strips defaults
+   and sets the shared optical treatment. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--w-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-title);
+  color: var(--text);
+}
+
+h1 {
+  font-size: var(--t-hero);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-hero);
+}
+
+p {
+  margin: 0;
+  line-height: var(--lh-body);
+}
+
+small {
+  font-size: var(--t-caption);
+  line-height: var(--lh-snug);
+}
+
+b,
+strong {
+  font-weight: var(--w-semibold);
+}
+
+/* ---- Form controls ------------------------------------------------------ */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  /* Every control gets press feedback by default; components only tune it. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+textarea,
+select {
+  /* iOS zooms any field under 16px on focus unless the field is sized up.
+     Fields here are ≥13px and the viewport is user-scalable, which is the
+     accessible trade-off; do not drop field sizes below --t-body. */
+  background: var(--fill-1);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  outline: 0;
+}
+
+textarea {
+  resize: vertical;
+  line-height: var(--lh-body);
+  padding: var(--s-3);
+  font-family: inherit;
+}
+
+::placeholder {
+  color: var(--text-quaternary);
+  opacity: 1;
+}
+
+select {
+  cursor: pointer;
+}
+
+/* Number fields: the spinners are noise in a data table. */
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ---- Media -------------------------------------------------------------- */
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+svg {
+  flex: none; /* icons must never be squeezed by a flex parent */
+}
+
+/* ---- Numerals ----------------------------------------------------------
+   Any figure that can change must not reflow its neighbours. */
+.kpi-value,
+.kpis b,
+.donut b,
+.reset-count b,
+td b,
+.payment-kpis b,
+.drawer-kpis b,
+.pagination,
+.legend b,
+.file-stats b {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+/* ---- Tables ------------------------------------------------------------ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-body);
+}
+
+/* ---- Charts -----------------------------------------------------------
+   Recharts renders SVG <text>, which does not inherit the body font. */
+.recharts-wrapper,
+.recharts-wrapper text,
+.recharts-tooltip-wrapper {
+  font-family: var(--font-sans);
+  letter-spacing: var(--tr-body);
+}
+
+.recharts-wrapper text {
+  fill: var(--text-tertiary);
+  font-size: var(--t-micro);
+}
+
+.recharts-surface {
+  overflow: visible;
+}
+
+/* ---- Focus -------------------------------------------------------------
+   One ring for the whole app. :focus-visible only, so pointer users never
+   see it, and it sits outside the element so it never shifts layout. */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/* Mouse-down on an already-focused control shouldn't flash the ring. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--brand-tint-strong);
+  color: var(--text);
+}
+
+/* ---- Scrollbars --------------------------------------------------------
+   Unstyled scrollbars are one of the loudest "generic admin panel" tells. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  border-radius: var(--r-pill);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-quaternary);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ---- Reduced transparency ---------------------------------------------
+   Translucency is an enhancement, never load-bearing. When the OS asks for
+   opaque UI, the blur is dropped and the material goes solid. */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --translucent-bar: var(--canvas);
+    --translucent-raised: var(--surface-raised);
+    --blur-bar: none;
+    --blur-overlay: none;
+  }
+}
+
+/* ---- Reduced motion ----------------------------------------------------
+   Entrances and transitions are collapsed rather than removed: a 1ms
+   duration still fires transitionend, so nothing that waits on it breaks.
+   Transforms are cleared too, or an element animating in from translateY
+   would be stranded at its start offset. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Hover lifts are decorative; drop them entirely. */
+  .kpis > article:hover,
+  .directory > button:hover,
+  .icon:active,
+  .primary:active:not(:disabled),
+  .secondary:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ---- Forced colors ---------------------------------------------------- */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}

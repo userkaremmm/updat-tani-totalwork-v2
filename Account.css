@@ -1,0 +1,272 @@
+/* ============================================================================
+   TOTAL WORK — Account
+   The user's own profile, the admin user table, and the create/delete dialog.
+   ========================================================================== */
+
+.profile-page {
+  max-width: 760px;
+  overflow: hidden;
+}
+
+.profile-page > header {
+  padding: var(--pad-card-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-page > header > span {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-lg);
+  background: var(--brand-tint);
+  color: var(--brand-text);
+}
+
+.profile-page > header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-page h2 {
+  margin: 0;
+  font-size: var(--t-title-lg);
+}
+
+.profile-page p {
+  margin: 3px 0 0;
+  /* --brand only clears 3.1:1 on white; role text this size needs --brand-text. */
+  color: var(--brand-text);
+  font-size: var(--t-caption);
+  font-weight: var(--w-bold);
+}
+
+.profile-page > header i {
+  margin-left: auto;
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--r-pill);
+  background: var(--success-tint);
+  color: var(--success);
+  font-size: var(--t-micro);
+  font-style: normal;
+}
+
+.profile-page form {
+  padding: var(--pad-card-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+}
+
+.profile-page label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.profile-page label span,
+.profile-page form > div span {
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+}
+
+/* Fields inherit border, radius and fill from base.css; only the box is set. */
+.profile-page input,
+.create-user input,
+.create-user select,
+.admin-users select {
+  height: 38px;
+  padding: 0 var(--pad-control);
+}
+
+/* Read-only facts (role, created-at) sit in a recessed block, not a field. */
+.profile-page form > div {
+  padding: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.profile-page form > div b {
+  font-size: var(--t-body);
+}
+
+.profile-page form footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.profile-page form footer span {
+  display: flex;
+  gap: var(--s-2);
+  color: var(--success);
+  font-size: var(--t-caption);
+}
+
+/* ============================================================================
+   Admin — user table
+   ========================================================================== */
+
+.admin-users {
+  overflow: hidden;
+}
+
+.admin-users > header {
+  padding: var(--s-5);
+  display: flex;
+  gap: var(--s-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-users h2 {
+  margin: 0;
+  font-size: var(--t-title);
+}
+
+.admin-users p {
+  margin: 3px 0;
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+}
+
+.admin-table {
+  overflow: auto;
+}
+
+/* The identity column stacks name over email, so it opts out of the flex
+   layout the shared table gives first cells. */
+.admin-table td:first-child {
+  display: table-cell;
+}
+
+.admin-table td:first-child b,
+.admin-table td:first-child small {
+  display: block;
+}
+
+.admin-table td:first-child small {
+  margin-top: 3px;
+  color: var(--text-secondary);
+  /* <small> would compute to ~10px from the cell size — below the type floor. */
+  font-size: var(--t-caption);
+}
+
+.admin-table select {
+  height: 31px;
+}
+
+.owner-badge {
+  padding: var(--s-1) 7px;
+  border-radius: var(--r-sm);
+  background: var(--brand-tint);
+  color: var(--brand-text);
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+}
+
+.account-status {
+  padding: var(--s-1) 7px;
+  border-radius: var(--r-pill);
+  background: var(--success-tint);
+  color: var(--success);
+}
+
+.account-status.disabled {
+  background: var(--fill-2);
+  color: var(--text-secondary);
+}
+
+.admin-actions {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.admin-actions button {
+  height: 30px;
+  padding: 0 var(--s-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--t-micro);
+}
+
+.admin-notice {
+  padding: var(--s-3) var(--s-5);
+  background: var(--warning-tint);
+  color: var(--warning);
+  font-size: var(--t-caption);
+}
+
+/* ============================================================================
+   Create / delete user dialog
+   Not a .panel — it floats over a scrim, so it takes the overlay material.
+   ========================================================================== */
+
+.create-user {
+  position: relative;
+  z-index: 1;
+  margin: auto;
+  width: min(430px, calc(100% - var(--s-8)));
+  padding: var(--pad-card-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  border-radius: var(--r-2xl);
+  background: var(--surface-overlay);
+  box-shadow: var(--elev-4);
+}
+
+.create-user > header {
+  display: flex;
+  gap: var(--s-3);
+}
+
+.create-user h2 {
+  margin: 0;
+  font-size: var(--t-title-lg);
+}
+
+.create-user p {
+  margin: 3px 0;
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+}
+
+.create-user label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.create-user label span {
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.create-user footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+}
+
+.admin-error {
+  color: var(--danger-text);
+  font-size: var(--t-caption);
+}
+
+@media (max-width: 650px) {
+  .profile-page form {
+    grid-template-columns: 1fr;
+  }
+}

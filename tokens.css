@@ -1,0 +1,358 @@
+/* ============================================================================
+   TOTAL WORK — Design tokens
+   The single source of truth. Nothing below this file redefines a token.
+
+   Layer model (the hierarchy must be legible at a glance):
+     canvas    — the backdrop. Only the app background lives here.
+     surface   — panels and cards. Hairline + elevation 1.
+     raised    — hovered cards, popovers, menus. Elevation 3.
+     overlay   — modals and drawers. Elevation 4 over a scrim.
+     fill      — recessed insets: inputs, table heads, tracks. Never a surface.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Brand ------------------------------------------------------------
+     #1e9d5f is the established TOTAL WORK green and stays the identity.
+     It only reaches 3.1:1 on white, so small text uses --brand-text. */
+  --brand: #1e9d5f;
+  --brand-hover: #1a8b53;
+  --brand-press: #157043;
+  --brand-text: #0d7343; /* AA for body-size text on light surfaces */
+  --brand-deep: #0f5f3a;
+  --brand-tint: #eaf5ef; /* icon wells, quiet chips */
+  --brand-tint-strong: #d5ebe0;
+  --brand-on: #ffffff; /* foreground on a filled brand surface */
+
+  /* Sequential green ramp — for ONE measure ranked across categories.
+     Ordered dark→light so a bar chart sorted by value reads as one family and
+     the colour repeats what the length already says, instead of fighting it. */
+  --seq-1: #0f5f3a;
+  --seq-2: #1a8b53;
+  --seq-3: #35a870;
+  --seq-4: #6cc298;
+  --seq-5: #9dd7ba;
+  --seq-6: #c8e8d7;
+
+  /* ---- Categorical palette ----------------------------------------------
+     For unordered entities that must be told apart — donut slices, per-entity
+     accents. Distinct hues at comparable lightness, so no single category
+     shouts louder than the rest.
+
+     Two constraints shaped these values:
+       · every hue clears 3:1 against --surface (WCAG 1.4.11, non-text), so a
+         slice is never a faint smudge. Measured range here is 3.5:1 – 5.8:1.
+       · they are separated in OKLab, not just by hue name. The weakest pair is
+         0.11 apart (~5x a just-noticeable difference), which is why --cat-7 is
+         an olive-citron: as a leaf green it sat 26 degrees from the brand hue
+         and the two read as one colour in an 8-slice donut.
+
+     Order matters: it is arranged so that any prefix is still well spread.
+     A three-slice donut takes 1-2-3 and gets green/blue/amber, not three
+     neighbouring hues. Beyond eight, charts.js derives more — see that file.
+
+     Their OKLCH hue ring (identical in both themes, and load-bearing for the
+     derivation in charts.js) is: 6 - 8 - 3 - 7 - 1 - 5 - 2 - 4. */
+  --cat-1: #1e9d5f; /* brand green — the anchor */
+  --cat-2: #3068ad;
+  --cat-3: #b5761b;
+  --cat-4: #7d55c7;
+  --cat-5: #0e8c93;
+  --cat-6: #c2416d;
+  --cat-7: #6f791a; /* olive-citron, NOT a second green — see note below */
+  --cat-8: #8a5a3c;
+
+  /* Derived categories are pulled toward this. It points AWAY from the panel
+     surface — dark here, light in dark mode — so generated colours gain
+     contrast rather than losing it. */
+  --cat-shade: #122019;
+
+  /* ---- Semantic ---------------------------------------------------------- */
+  --danger: #c0392f;
+  --danger-text: #a32e26;
+  --danger-tint: #fdeeec;
+  --danger-on: #ffffff; /* foreground on a filled danger surface */
+  --warning: #a86a12;
+  --warning-tint: #fdf3e3;
+  --success: #1a8b53;
+  --success-tint: #eaf5ef;
+  --info: #2b6cb0;
+  --info-tint: #ebf2fa;
+
+  /* ---- Materials --------------------------------------------------------- */
+  --canvas: #eceee9;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-sunken: #e4e7e1;
+
+  /* Recessed fills. Stepped, so nesting stays readable. */
+  --fill-1: #f4f6f2;
+  --fill-2: #eceff0;
+  --fill-3: #e3e7e2;
+
+  /* Inverted material — the payments hero, the loading screen.
+     A distinct solid material, deliberately not a gradient. */
+  --ink-surface: #12241c;
+  --ink-surface-2: #1b3227;
+  --on-ink: #ffffff;
+  --on-ink-muted: #9fb8ab;
+  --on-ink-line: #ffffff1f;
+  /* Recessed fills on the inverted material. Not theme-dependent: the
+     material underneath is the same dark green in both themes. */
+  --on-ink-fill: #ffffff14;
+  --on-ink-fill-hover: #ffffff21;
+
+  /* ---- Text -------------------------------------------------------------- */
+  --text: #131a16;
+  --text-secondary: #5c6b62;
+  --text-tertiary: #8b9992;
+  --text-quaternary: #a9b4ae;
+  --text-on-fill: #131a16;
+
+  /* ---- Separators --------------------------------------------------------
+     Hairlines carry hierarchy here; they are not decoration.
+     --line is for structure, --line-soft for divisions inside one surface. */
+  --line: #e2e6df;
+  --line-soft: #edf0ea;
+  --line-strong: #d3d9d1;
+  --grid: #e9ece6; /* chart gridlines */
+  --chart-muted: #dde3dc; /* unfilled chart remainder */
+
+  /* ---- Interaction states ------------------------------------------------ */
+  --hover: #f3f5f1;
+  --press: #e9ece6;
+  --selected: var(--brand-tint);
+  --focus-ring: color-mix(in srgb, var(--brand) 42%, transparent);
+  --scrim: rgba(15, 24, 19, 0.32);
+
+  /* ---- Elevation --------------------------------------------------------
+     Short, soft, layered. A resting card is barely lifted; only genuinely
+     floating things get depth. */
+  --elev-1: 0 1px 2px rgba(16, 27, 21, 0.05);
+  --elev-2: 0 1px 2px rgba(16, 27, 21, 0.05), 0 3px 8px rgba(16, 27, 21, 0.045);
+  --elev-3: 0 1px 2px rgba(16, 27, 21, 0.04), 0 10px 24px rgba(16, 27, 21, 0.08);
+  --elev-4: 0 2px 6px rgba(16, 27, 21, 0.05), 0 28px 64px rgba(16, 27, 21, 0.16);
+  --elev-brand: 0 2px 10px color-mix(in srgb, var(--brand) 26%, transparent);
+
+  /* Translucency — used only on things that overlap scrolling content. */
+  --blur-bar: saturate(180%) blur(20px);
+  --blur-overlay: saturate(180%) blur(30px);
+  --translucent-bar: color-mix(in srgb, var(--canvas) 72%, transparent);
+  --translucent-raised: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --brand: #35b978;
+  --brand-hover: #45c886;
+  --brand-press: #2ba268;
+  --brand-text: #5fcc95;
+  --brand-deep: #8fdcb4;
+  --brand-tint: #162c21;
+  --brand-tint-strong: #1d3a2b;
+  --brand-on: #05150c;
+
+  /* The ramp inverts: on a dark canvas the LIGHTEST green must read as the
+     largest value, or the biggest bar becomes the hardest one to see. */
+  --seq-1: #8fdcb4;
+  --seq-2: #5fcc95;
+  --seq-3: #35b978;
+  --seq-4: #2a8f5d;
+  --seq-5: #216a47;
+  --seq-6: #1a4a34;
+
+  /* Same eight hues, re-tuned rather than reused: the light-theme values sit
+     at 6:1 or worse against #171d19 in the wrong direction — too dark to
+     separate from the panel. These are lifted in lightness and pulled back in
+     chroma so they stay 6:1–8.4:1 against --surface without glowing. */
+  --cat-1: #35b978;
+  --cat-2: #6ba6e8;
+  --cat-3: #e0a441;
+  --cat-4: #b094ef;
+  --cat-5: #3fbec4;
+  --cat-6: #ec7ba2;
+  --cat-7: #a3c549;
+  --cat-8: #c99a76;
+
+  /* Inverted with the theme — derived categories brighten here instead of
+     darkening, so they keep pulling away from the panel. */
+  --cat-shade: #eef6f1;
+
+  --danger: #e8776c;
+  --danger-text: #ef8d83;
+  --danger-tint: #33201d;
+  /* Dark-theme --danger is a light red, so a filled danger surface needs a
+     dark foreground here — white would drop to ~2:1. */
+  --danger-on: #2b0f0b;
+  --warning: #d9a75a;
+  --warning-tint: #32281a;
+  --success: #35b978;
+  --success-tint: #162c21;
+  --info: #6fa8dc;
+  --info-tint: #1a2530;
+
+  --canvas: #0e120f;
+  --surface: #171d19;
+  --surface-raised: #1e2521;
+  --surface-overlay: #202823;
+  --surface-sunken: #0a0d0b;
+
+  --fill-1: #1e2521;
+  --fill-2: #232b26;
+  --fill-3: #2a332d;
+
+  --ink-surface: #10201a;
+  --ink-surface-2: #16291f;
+  --on-ink: #f0f6f2;
+  --on-ink-muted: #8ea79a;
+  --on-ink-line: #ffffff1a;
+
+  --text: #eef3f0;
+  --text-secondary: #a2b1a9;
+  --text-tertiary: #79887f;
+  --text-quaternary: #5d6a63;
+  --text-on-fill: #eef3f0;
+
+  --line: #2a332d;
+  --line-soft: #222a25;
+  --line-strong: #384239;
+  --grid: #232b26;
+  --chart-muted: #313a34;
+
+  --hover: #212a25;
+  --press: #283128;
+  --selected: var(--brand-tint);
+  --focus-ring: color-mix(in srgb, var(--brand) 52%, transparent);
+  --scrim: rgba(0, 0, 0, 0.55);
+
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --elev-2: 0 1px 2px rgba(0, 0, 0, 0.4), 0 3px 8px rgba(0, 0, 0, 0.3);
+  --elev-3: 0 1px 3px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(0, 0, 0, 0.45);
+  --elev-4: 0 4px 10px rgba(0, 0, 0, 0.5), 0 32px 70px rgba(0, 0, 0, 0.62);
+  --elev-brand: 0 2px 12px color-mix(in srgb, var(--brand) 22%, transparent);
+
+  --translucent-bar: color-mix(in srgb, var(--canvas) 76%, transparent);
+  --translucent-raised: color-mix(in srgb, var(--surface-raised) 86%, transparent);
+}
+
+/* ============================================================================
+   Theme-independent primitives
+   ========================================================================== */
+
+:root {
+  /* ---- Radius ------------------------------------------------------------
+     Nesting rule: an inner radius should equal the outer radius minus the
+     padding between them, so corners stay concentric.
+     A 16px card with 4px inset holds a 12px child. */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-2xl: 20px;
+  --r-pill: 999px;
+  --r-circle: 50%;
+
+  /* ---- Spacing — 4px rhythm --------------------------------------------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 28px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Semantic spacing — change these, not the raw steps. */
+  --pad-card: var(--s-5);
+  --pad-card-lg: var(--s-6);
+  --gap-grid: var(--s-4);
+  --pad-page-x: var(--s-8);
+  --pad-page-y: var(--s-6);
+  --pad-control: var(--s-3);
+
+  /* ---- Layout ------------------------------------------------------------
+     Sidebar geometry was hardcoded in five places. It now lives here only. */
+  --rail-w: 264px;
+  --rail-gap: var(--s-3);
+
+  /* Nav geometry. The collapsed width is DERIVED from these so the icon sits
+     at the identical x-offset expanded and collapsed — the rail narrows
+     around the icons instead of moving them. Change a value here and the
+     collapsed width follows; do not hardcode it. */
+  --nav-inset: 12px; /* nav horizontal padding */
+  --nav-pad: 15px; /* nav button horizontal padding */
+  --nav-icon: 18px; /* lucide icon size in the rail */
+  --rail-w-collapsed: calc((var(--nav-inset) + var(--nav-pad) + var(--nav-icon) / 2) * 2);
+
+  --topbar-h: 68px;
+  --page-max: 1580px;
+
+  /* ---- Type -------------------------------------------------------------
+     The old scale bottomed out at 8px, which is below any legible floor.
+     Nothing here goes under 11px. */
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-numeric: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  --t-micro: 11px; /* eyebrows, table heads, chart ticks */
+  --t-caption: 12px; /* captions, helper text, secondary rows */
+  --t-body: 13px; /* default body, table cells */
+  --t-body-lg: 14px;
+  --t-title: 15px; /* card titles */
+  --t-title-lg: 17px;
+  --t-value: 22px; /* KPI numerals */
+  --t-value-lg: 26px;
+  --t-hero: clamp(24px, 1.6vw + 14px, 30px);
+
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-body: 1.5;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --w-bold: 700;
+
+  /* Optical tracking: tighten as size grows, open up at micro sizes. */
+  --tr-hero: -0.021em;
+  --tr-title: -0.012em;
+  --tr-body: -0.006em;
+  --tr-micro: 0.02em;
+  --tr-eyebrow: 0.075em;
+
+  /* ---- Motion -----------------------------------------------------------
+     Press feedback must feel instantaneous; only large surfaces take time.
+     All state change uses `transition` so it stays interruptible. */
+  --dur-instant: 90ms;
+  --dur-press: 120ms;
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-slow: 320ms;
+  --dur-surface: 420ms;
+
+  /* Strong deceleration — motion arrives and settles rather than coasting. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emph: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  /* Restrained overshoot. Deliberately not springy. */
+  --ease-spring: cubic-bezier(0.34, 1.24, 0.48, 1);
+
+  /* Stagger step for list/grid entrances. */
+  --stagger: 32ms;
+
+  /* ---- Z ---------------------------------------------------------------- */
+  --z-rail: 40;
+  --z-bar: 30;
+  --z-scrim: 39;
+  --z-popover: 60;
+  --z-overlay: 80;
+  --z-toast: 120;
+  --z-boot: 200;
+}

@@ -1,0 +1,406 @@
+/* ============================================================================
+   TOTAL WORK — Controls
+   Buttons, fields, filters and status chips.
+   Every interactive element here shares one hover/press/focus grammar.
+   ========================================================================== */
+
+/* ============================================================================
+   Buttons
+   ========================================================================== */
+
+.primary,
+.secondary {
+  height: 38px;
+  padding-inline: var(--s-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-size: var(--t-body);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tr-body);
+  white-space: nowrap;
+  transition: background-color var(--dur-press) var(--ease-out), border-color var(--dur-press) var(--ease-out),
+    color var(--dur-press) var(--ease-out), box-shadow var(--dur-press) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
+}
+
+.primary {
+  background: var(--brand);
+  color: var(--brand-on);
+  box-shadow: var(--elev-brand);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+}
+
+.primary:active:not(:disabled) {
+  background: var(--brand-press);
+  transform: scale(0.985);
+  box-shadow: none;
+}
+
+.secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--line);
+  box-shadow: var(--elev-1);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--hover);
+  border-color: var(--line-strong);
+}
+
+.secondary:active:not(:disabled) {
+  background: var(--press);
+  transform: scale(0.985);
+}
+
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ---- Icon button -------------------------------------------------------- */
+.icon {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: background-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out),
+    border-color var(--dur-press) var(--ease-out);
+}
+
+.icon:hover {
+  background: var(--hover);
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.icon:active {
+  background: var(--press);
+  transform: scale(0.95);
+}
+
+/* Notification dot. Sits on the bell, not in the layout flow. */
+.bell {
+  position: relative;
+}
+
+.bell i {
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-circle);
+  background: var(--danger);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+/* Destructive intent is carried by colour alone — never by a filled button,
+   which would compete with the primary action. */
+.danger,
+.danger svg {
+  color: var(--danger-text);
+}
+
+/* ============================================================================
+   Fields
+   ========================================================================== */
+
+.filter-grid input,
+.filter-grid select,
+.form-grid input,
+.form-modal textarea,
+.table-tools input,
+.payment-hero input {
+  width: 100%;
+  height: 38px;
+  padding-inline: var(--pad-control);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--fill-1);
+  color: var(--text);
+  font-size: var(--t-body);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.filter-grid input:hover,
+.filter-grid select:hover,
+.form-grid input:hover,
+.table-tools input:hover {
+  border-color: var(--line-strong);
+}
+
+.filter-grid input:focus,
+.filter-grid select:focus,
+.form-grid input:focus,
+.form-modal textarea:focus,
+.table-tools input:focus {
+  background: var(--surface);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.filter-grid label,
+.form-grid label,
+.form-modal main > section > label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.filter-grid label > span,
+.form-grid label > span,
+.form-modal label > span {
+  font-size: var(--t-micro);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tr-micro);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* The label lights up with its field — cheap, and it makes long filter rows
+   much easier to keep your place in. */
+.filter-grid label:focus-within > span,
+.form-grid label:focus-within > span {
+  color: var(--brand-text);
+}
+
+/* ---- Field affordances -------------------------------------------------- */
+.input-icon,
+.select {
+  position: relative;
+}
+
+.input-icon svg {
+  position: absolute;
+  left: var(--pad-control);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.input-icon input {
+  padding-left: calc(var(--pad-control) * 2 + 16px);
+}
+
+.select select {
+  appearance: none;
+  padding-right: var(--s-7);
+}
+
+.select svg {
+  position: absolute;
+  right: var(--s-2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.range {
+  display: grid;
+  grid-template-columns: 1fr 16px 1fr;
+  align-items: center;
+}
+
+.range input {
+  padding-inline: var(--s-1);
+  text-align: center;
+}
+
+.range i {
+  font-style: normal;
+  text-align: center;
+  font-size: var(--t-caption);
+  color: var(--text-tertiary);
+}
+
+/* ============================================================================
+   Filter bar
+   ========================================================================== */
+
+.filters {
+  position: relative;
+  padding: var(--s-4) var(--pad-card) var(--pad-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--elev-1);
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.filters:focus-within {
+  box-shadow: var(--elev-2);
+}
+
+.filters > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+
+.filters > header > div {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.filters > header svg {
+  color: var(--brand-text);
+}
+
+.filters > header b {
+  font-size: var(--t-body-lg);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tr-title);
+}
+
+.filters > header span {
+  padding-left: var(--s-2);
+  border-left: 1px solid var(--line);
+  color: var(--text-tertiary);
+  font-size: var(--t-caption);
+}
+
+.filters > header button {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+  font-weight: var(--w-medium);
+  transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.filters > header button:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.filters > header button svg {
+  color: inherit;
+  transition: transform var(--dur-slow) var(--ease-emph);
+}
+
+.filters > header button:hover svg {
+  transform: rotate(-180deg);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(5, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+/* ============================================================================
+   Status chips
+   ========================================================================== */
+
+.status {
+  width: max-content;
+  padding: 3px var(--s-2);
+  border-radius: var(--r-pill);
+  font-size: var(--t-micro);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tr-micro);
+  color: var(--success);
+  background: var(--success-tint);
+}
+
+.status.full {
+  color: var(--warning);
+  background: var(--warning-tint);
+}
+
+.status.invalid {
+  color: var(--info);
+  background: var(--info-tint);
+}
+
+/* Live-status pill in the page header. */
+.operational {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+  white-space: nowrap;
+}
+
+.operational i {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-circle);
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--success-tint);
+}
+
+.company-badge {
+  padding: 3px var(--s-2);
+  margin-right: var(--s-1);
+  border-radius: var(--r-xs);
+  background: var(--fill-2);
+  color: var(--text);
+  font-size: var(--t-micro);
+  font-weight: var(--w-semibold);
+}
+
+.unit {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--brand-tint);
+  color: var(--brand-text);
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1250px) {
+  .filter-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}

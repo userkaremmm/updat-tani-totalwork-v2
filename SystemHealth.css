@@ -1,0 +1,328 @@
+/* ============================================================================
+   TOTAL WORK — System health
+   Read-only diagnostics: storage, integrity, validation counts, security.
+   ========================================================================== */
+
+.system-health {
+  margin-top: var(--s-4);
+}
+
+/* Standalone header band — not a .panel, so it carries its own surface. */
+.health-heading {
+  padding: var(--s-5);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--s-5);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+}
+
+.health-heading > div > span {
+  color: var(--brand-text);
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-eyebrow);
+}
+
+.health-heading h2 {
+  margin: var(--s-2) 0 3px;
+  font-size: var(--t-title-lg);
+}
+
+.health-heading p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+}
+
+/* ============================================================================
+   Status cards
+   ========================================================================== */
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+
+.health-card {
+  padding: 17px;
+}
+
+.health-card > header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.health-card > header > span {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-lg);
+  background: var(--brand-tint);
+  color: var(--brand-text);
+}
+
+.health-card h3 {
+  margin: 0 0 var(--s-1);
+  font-size: var(--t-title);
+}
+
+/* The dot carries the state; the label stays neutral so a wall of cards
+   doesn't turn into a wall of colour. */
+.health-status {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.health-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-circle);
+  background: var(--text-quaternary);
+}
+
+.health-status.healthy i {
+  background: var(--success);
+}
+
+.health-status.warning i {
+  background: var(--warning);
+}
+
+.health-status.error i {
+  background: var(--danger);
+}
+
+.health-status.neutral i {
+  background: var(--text-quaternary);
+}
+
+/* ---- Definition rows ---------------------------------------------------- */
+.health-card dl {
+  margin: var(--s-4) 0 0;
+}
+
+.security-card dl {
+  margin: var(--s-4) 0 0;
+}
+
+.health-card dl > div,
+.security-card dl > div {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+
+.health-card dt,
+.security-card dt {
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.health-card dd,
+.security-card dd {
+  margin: 0;
+  text-align: right;
+  font-size: var(--t-caption);
+  font-weight: var(--w-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   Validation & security
+   ========================================================================== */
+
+.health-lower {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+
+.validation-card,
+.security-card {
+  padding: var(--s-5);
+}
+
+.validation-card > header,
+.security-card > header {
+  display: flex;
+  gap: 9px;
+}
+
+.validation-card > header > svg,
+.security-card > header > svg {
+  color: var(--brand-text);
+}
+
+.validation-card h3,
+.security-card h3 {
+  margin: 0;
+  font-size: var(--t-title);
+}
+
+.validation-card p,
+.security-card p {
+  margin: 3px 0;
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+}
+
+.validation-card > div {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--s-2);
+  margin-top: 17px;
+}
+
+.validation-card article {
+  min-height: 70px;
+  padding: 11px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.validation-card article > span {
+  font-size: var(--t-value);
+  font-weight: var(--w-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.validation-card article > span.healthy {
+  color: var(--success);
+}
+
+.validation-card article > span.warning {
+  color: var(--warning);
+}
+
+.validation-card article > span.error {
+  color: var(--danger-text);
+}
+
+/* A zero problem count (see Metric in SystemHealth.jsx). It still reads as a
+   figure, just a calm one — nothing here needs attention. */
+.validation-card article > span.neutral {
+  color: var(--text-secondary);
+}
+
+.validation-card small {
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.health-checked {
+  padding: var(--s-3) 3px;
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.health-error {
+  margin-top: var(--s-3);
+  padding: 11px;
+  border: 1px solid color-mix(in srgb, var(--danger) 34%, transparent);
+  border-radius: var(--r-md);
+  background: var(--danger-tint);
+  color: var(--danger-text);
+  font-size: var(--t-caption);
+}
+
+/* ============================================================================
+   Loading states
+   ========================================================================== */
+
+.spinning {
+  animation: health-spin 0.8s linear infinite;
+}
+
+@keyframes health-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.health-skeleton {
+  height: 180px;
+  padding: var(--s-5);
+  overflow: hidden;
+}
+
+.health-skeleton i {
+  display: block;
+  height: var(--s-4);
+  margin-bottom: var(--s-4);
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--fill-1), var(--line), var(--fill-1));
+  background-size: 200% 100%;
+  animation: health-shimmer 1.2s infinite;
+}
+
+.health-skeleton i:first-child {
+  width: 45%;
+}
+
+.health-skeleton i:nth-child(2) {
+  width: 80%;
+}
+
+@keyframes health-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .health-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .validation-card > div {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .health-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .health-heading button {
+    width: 100%;
+  }
+
+  .health-grid,
+  .health-lower {
+    grid-template-columns: 1fr;
+  }
+
+  .validation-card > div {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .validation-card > div {
+    grid-template-columns: 1fr;
+  }
+}

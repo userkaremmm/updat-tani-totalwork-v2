@@ -1,0 +1,452 @@
+/* ============================================================================
+   TOTAL WORK — Layout layer
+   The app shell: rail, topbar, page. Geometry only comes from tokens.
+
+   Structure this layer targets (from App.jsx):
+     .app > aside.sidebar + main > .topbar + .page
+   ========================================================================== */
+
+.app {
+  min-height: 100vh;
+}
+
+.app > main {
+  min-height: 100vh;
+  margin-left: var(--rail-w);
+  transition: margin-left var(--dur-surface) var(--ease-emph);
+}
+
+.app.collapsed > main {
+  margin-left: var(--rail-w-collapsed);
+}
+
+.page {
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding: var(--pad-page-y) var(--pad-page-x) var(--s-12);
+  animation: page-in var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ============================================================================
+   Rail
+   A light rail, as in the reference — the old build used a near-black slab,
+   which fought the canvas instead of sitting on it.
+   ========================================================================== */
+
+.sidebar {
+  position: fixed;
+  z-index: var(--z-rail);
+  inset: 0 auto 0 0;
+  width: var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  color: var(--text);
+  /* Only the width animates; `all` here would drag every hover repaint. */
+  transition: width var(--dur-surface) var(--ease-emph), transform var(--dur-base) var(--ease-emph);
+}
+
+.app.collapsed .sidebar {
+  width: var(--rail-w-collapsed);
+}
+
+/* ---- Brand -------------------------------------------------------------- */
+.brand {
+  height: var(--topbar-h);
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding-inline: calc(var(--nav-inset) + var(--s-1));
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.brand img {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  object-fit: contain;
+  border-radius: var(--r-sm);
+  /* The logo is a JPEG with a baked-in white matte, so its backing stays
+     white in both themes — a token here would show as a halo in dark mode.
+     The ring is what turns that into a deliberate tile: unframed, a white
+     square on the dark rail reads as a broken image. Fixed rgba rather than
+     --line, because --line is a pale tint in dark mode and would disappear
+     against the white it is meant to bound. */
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 0.09);
+}
+
+.brand div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand b {
+  font-size: var(--t-body-lg);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-title);
+}
+
+.brand span {
+  font-size: var(--t-micro);
+  color: var(--text-tertiary);
+}
+
+/* ---- Nav ---------------------------------------------------------------
+   The icon must not move between expanded and collapsed, so the padding is
+   constant and only the label is removed. See --rail-w-collapsed in tokens.
+   ------------------------------------------------------------------------ */
+.sidebar nav {
+  flex: 1;
+  padding: var(--s-5) var(--nav-inset) var(--s-4);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar nav > small {
+  display: block;
+  margin: 0 0 var(--s-2) var(--nav-pad);
+  color: var(--text-quaternary);
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-eyebrow);
+  white-space: nowrap;
+}
+
+.sidebar nav > small:nth-of-type(2) {
+  margin-top: var(--s-6);
+}
+
+.sidebar nav button {
+  position: relative;
+  width: 100%;
+  height: 42px;
+  padding-inline: var(--nav-pad);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  border-radius: var(--r-md);
+  color: var(--text-secondary);
+  font-size: var(--t-body);
+  font-weight: var(--w-medium);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.sidebar nav button + button {
+  margin-top: 2px;
+}
+
+.sidebar nav button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar nav button:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.sidebar nav button:active {
+  background: var(--press);
+}
+
+/* The active item is a filled brand pill — the one loud element in the rail. */
+.sidebar nav button.active {
+  color: var(--brand-on);
+  background: var(--brand);
+  font-weight: var(--w-semibold);
+  box-shadow: var(--elev-brand);
+}
+
+.sidebar nav button.active:hover {
+  background: var(--brand-hover);
+}
+
+/* ---- Session footer ----------------------------------------------------- */
+.sidebar > footer {
+  flex: none;
+  margin: var(--nav-inset);
+  padding: var(--s-3);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar > footer svg {
+  color: var(--brand-text);
+}
+
+.sidebar > footer div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sidebar > footer b {
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-micro);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar > footer span {
+  font-size: var(--t-micro);
+  color: var(--text-tertiary);
+}
+
+/* ---- Collapse handle ---------------------------------------------------- */
+.collapse {
+  position: absolute;
+  right: -13px;
+  top: calc(var(--topbar-h) + var(--s-5));
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-circle);
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  box-shadow: var(--elev-2);
+  transition: color var(--dur-fast), background-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.collapse:hover {
+  color: var(--brand-text);
+  box-shadow: var(--elev-3);
+}
+
+.collapse svg {
+  transition: transform var(--dur-base) var(--ease-emph);
+}
+
+.app.collapsed .collapse svg {
+  transform: rotate(180deg);
+}
+
+/* Collapsed: hide every label, keep every icon in place. */
+.app.collapsed .brand div,
+.app.collapsed .sidebar nav > small,
+.app.collapsed .sidebar nav button span,
+.app.collapsed .sidebar > footer div {
+  display: none;
+}
+
+.app.collapsed .sidebar > footer {
+  justify-content: center;
+}
+
+/* ============================================================================
+   Topbar
+   Sticky and translucent, so content scrolling under it stays legible.
+   ========================================================================== */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-bar);
+  height: var(--topbar-h);
+  padding-inline: var(--pad-page-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  border-bottom: 1px solid var(--line);
+  background: var(--translucent-bar);
+  -webkit-backdrop-filter: var(--blur-bar);
+  backdrop-filter: var(--blur-bar);
+}
+
+.top-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.top-title section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.top-title span {
+  font-size: var(--t-micro);
+  color: var(--text-tertiary);
+  letter-spacing: var(--tr-micro);
+}
+
+.top-title b {
+  font-size: var(--t-title);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--tr-title);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+/* ---- Profile ------------------------------------------------------------ */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-left: var(--s-1);
+  padding-left: var(--s-3);
+  border-left: 1px solid var(--line);
+  color: var(--text);
+}
+
+.profile > span {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-circle);
+  background: var(--brand);
+  color: var(--brand-on);
+  font-size: var(--t-caption);
+  font-weight: var(--w-bold);
+  letter-spacing: 0;
+}
+
+.profile section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.profile b {
+  font-size: var(--t-caption);
+  font-weight: var(--w-semibold);
+}
+
+.profile small {
+  font-size: var(--t-micro);
+  color: var(--text-tertiary);
+}
+
+.profile svg {
+  color: var(--text-tertiary);
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  :root {
+    --pad-page-x: var(--s-5);
+  }
+}
+
+/* Below this the rail becomes an overlay drawer. */
+@media (max-width: 950px) {
+  .sidebar {
+    width: var(--rail-w);
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    transform: none;
+    box-shadow: var(--elev-4);
+  }
+
+  /* Collapsed state is meaningless once the rail is an overlay. */
+  .app.collapsed .sidebar {
+    width: var(--rail-w);
+  }
+
+  .app.collapsed .brand div,
+  .app.collapsed .sidebar nav > small,
+  .app.collapsed .sidebar nav button span,
+  .app.collapsed .sidebar > footer div {
+    display: revert;
+  }
+
+  .app.collapsed .sidebar > footer {
+    justify-content: flex-start;
+  }
+
+  .app > main,
+  .app.collapsed > main {
+    margin-left: 0;
+  }
+
+  .collapse {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: grid;
+  }
+
+  .nav-backdrop {
+    z-index: var(--z-scrim);
+  }
+}
+
+@media (max-width: 650px) {
+  :root {
+    --pad-page-x: var(--s-4);
+    --pad-page-y: var(--s-4);
+  }
+
+  /* The label collapses into the icon; the button stays a 38px square. The
+     selector carries both classes on purpose: controls.css loads after this
+     file, so a bare `.top-add` tied with `.primary` and lost — the width
+     applied while the 16px padding and 13px label did not, which pushed the
+     text out of the square and onto the avatar. `flex: none` keeps the square
+     square once the topbar starts competing for room.
+     The label stays in the DOM at font-size 0, so the button keeps its
+     accessible name. */
+  .primary.top-add {
+    width: 38px;
+    flex: none;
+    padding: 0;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .profile section,
+  .profile svg {
+    display: none;
+  }
+
+  .profile {
+    border-left: 0;
+    padding-left: 0;
+  }
+}

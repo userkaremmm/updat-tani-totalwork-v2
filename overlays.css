@@ -1,0 +1,451 @@
+/* ============================================================================
+   TOTAL WORK — Overlays
+   Drawer, modal, menu, toast. Everything that floats over the page.
+
+   Elevation contract: scrim → --z-overlay, the surface itself --elev-4.
+   ========================================================================== */
+
+.modal-layer {
+  position: fixed;
+  z-index: var(--z-overlay);
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  animation: scrim-in var(--dur-fast) var(--ease-out) both;
+}
+
+@keyframes scrim-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: var(--scrim);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  cursor: default;
+}
+
+/* ============================================================================
+   Drawer
+   ========================================================================== */
+
+.drawer {
+  position: relative;
+  width: min(520px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-overlay);
+  border-radius: var(--r-2xl) 0 0 var(--r-2xl);
+  box-shadow: var(--elev-4);
+  animation: drawer-in var(--dur-base) var(--ease-emph) both;
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+.drawer > header,
+.form-modal > header {
+  flex: none;
+  padding: var(--pad-card-lg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.drawer > header span,
+.form-modal > header span {
+  display: block;
+  margin-bottom: var(--s-1);
+  color: var(--brand-text);
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-eyebrow);
+}
+
+.drawer > header h2,
+.form-modal > header h2 {
+  font-size: var(--t-title-lg);
+  font-weight: var(--w-bold);
+}
+
+.form-modal > header p {
+  margin-top: var(--s-1);
+  color: var(--text-secondary);
+  font-size: var(--t-caption);
+}
+
+.drawer > main {
+  flex: 1;
+  padding: var(--pad-card-lg);
+  overflow: auto;
+}
+
+.drawer > main h3,
+.form-modal main h3 {
+  margin-bottom: var(--s-3);
+  color: var(--text-tertiary);
+  font-size: var(--t-micro);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-eyebrow);
+  text-transform: uppercase;
+}
+
+/* ---- Drawer blocks ------------------------------------------------------ */
+.drawer-status,
+.drawer-status > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.drawer-status > div {
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.drawer-status section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.drawer-status b {
+  font-size: var(--t-body-lg);
+  font-weight: var(--w-semibold);
+}
+
+.drawer-status small {
+  color: var(--text-tertiary);
+  font-size: var(--t-caption);
+}
+
+/* Larger variant of the table's unit badge. */
+.unit.big {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-lg);
+}
+
+.drawer-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin: var(--s-5) 0;
+}
+
+.drawer-kpis article {
+  padding: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+}
+
+.drawer-kpis svg {
+  color: var(--brand-text);
+  margin-bottom: var(--s-1);
+}
+
+.drawer-kpis span {
+  color: var(--text-secondary);
+  font-size: var(--t-micro);
+}
+
+.drawer-kpis b {
+  font-size: var(--t-title-lg);
+  font-weight: var(--w-bold);
+}
+
+.drawer-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+
+.drawer-fields > div {
+  padding: var(--s-3);
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: center;
+  gap: 2px var(--s-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+
+.drawer-fields svg {
+  grid-row: span 2;
+  color: var(--text-tertiary);
+}
+
+.drawer-fields span {
+  color: var(--text-tertiary);
+  font-size: var(--t-micro);
+}
+
+.drawer-fields b {
+  font-size: var(--t-body);
+  font-weight: var(--w-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The monthly amount — the one figure worth the inverted material. */
+.price {
+  padding: var(--s-4);
+  margin: var(--s-5) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--ink-surface);
+  color: var(--on-ink);
+}
+
+.price section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.price span {
+  color: var(--on-ink-muted);
+  font-size: var(--t-caption);
+}
+
+.price b {
+  font-size: var(--t-value);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--tr-hero);
+}
+
+.price svg {
+  color: var(--on-ink-muted);
+}
+
+.remark {
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--fill-1);
+  color: var(--text-secondary);
+  font-size: var(--t-body);
+}
+
+.drawer > footer,
+.form-modal > footer {
+  flex: none;
+  padding: var(--s-4) var(--pad-card-lg);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-2);
+  border-top: 1px solid var(--line);
+  background: var(--surface-overlay);
+}
+
+/* ============================================================================
+   Form modal
+   ========================================================================== */
+
+.form-modal {
+  position: relative;
+  margin: auto;
+  width: min(780px, calc(100% - var(--s-8)));
+  max-height: min(92vh, 900px);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-2xl);
+  background: var(--surface-overlay);
+  box-shadow: var(--elev-4);
+  animation: modal-in var(--dur-base) var(--ease-emph) both;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+.form-modal > main {
+  flex: 1;
+  padding: var(--pad-card-lg);
+  overflow: auto;
+}
+
+.form-modal main > section + section {
+  margin-top: var(--s-6);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+
+.form-modal textarea {
+  height: 78px;
+  padding: var(--s-3);
+}
+
+.form-modal > footer {
+  justify-content: flex-end;
+}
+
+/* Invalid fields state their problem inline, under the input. */
+.form-grid label.invalid input,
+.form-modal label.invalid input {
+  border-color: var(--danger);
+  background: var(--danger-tint);
+}
+
+.form-grid label.invalid input:focus,
+.form-modal label.invalid input:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 24%, transparent);
+}
+
+.form-grid label.invalid > span,
+.form-modal label.invalid > span {
+  color: var(--danger-text);
+}
+
+.form-modal label small {
+  color: var(--danger-text);
+  font-size: var(--t-micro);
+  line-height: var(--lh-snug);
+}
+
+/* ============================================================================
+   Profile menu
+   ========================================================================== */
+
+.profile-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--s-2));
+  z-index: var(--z-popover);
+  width: 200px;
+  padding: var(--s-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-3);
+  animation: menu-in var(--dur-fast) var(--ease-emph) both;
+  transform-origin: top right;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+.profile-menu button {
+  width: 100%;
+  height: 36px;
+  padding-inline: var(--s-2);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font-size: var(--t-body);
+  text-align: left;
+  transition: background-color var(--dur-fast), color var(--dur-fast);
+}
+
+.profile-menu button svg {
+  color: var(--text-tertiary);
+  transition: color var(--dur-fast);
+}
+
+.profile-menu button:hover {
+  background: var(--hover);
+  color: var(--brand-text);
+}
+
+.profile-menu button:hover svg {
+  color: var(--brand-text);
+}
+
+/* ============================================================================
+   Toast
+   ========================================================================== */
+
+.toast {
+  position: fixed;
+  right: var(--s-6);
+  bottom: var(--s-6);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid color-mix(in srgb, var(--success) 30%, transparent);
+  border-radius: var(--r-lg);
+  background: var(--success-tint);
+  color: var(--brand-text);
+  font-size: var(--t-body);
+  font-weight: var(--w-medium);
+  box-shadow: var(--elev-3);
+  animation: toast-in var(--dur-base) var(--ease-spring) both;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 650px) {
+  .drawer {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .form-modal {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .modal-layer {
+    align-items: stretch;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toast {
+    right: var(--s-4);
+    left: var(--s-4);
+    bottom: var(--s-4);
+  }
+}
+
+@media (max-width: 430px) {
+  .form-grid,
+  .drawer-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
