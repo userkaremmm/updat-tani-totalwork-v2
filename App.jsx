@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Activity, BarChart3, Bell, BriefcaseBusiness, Building2, CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, CircleDollarSign, Download, FileBarChart, Filter, Gauge, Home, LogOut, MapPin, Menu, Moon, Pencil, Plus, RefreshCw, Search, Settings, ShieldCheck, SlidersHorizontal, Sun, Trash2, UserRound, UsersRound, WalletCards, X } from 'lucide-react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import logo from "./TOTAL WORK LOGO.jpg"
+import logo from './TOTAL WORK LOGO.jpg'
 import { axis, categorical, cursor, grid, sequential, sliceGap } from './charts.js'
 import ExcelImport, { ImportHistory } from './ExcelImport.jsx'
 import { assertUniqueMatricules, normalizeMatricule, recordKey } from './import-utils.js'
